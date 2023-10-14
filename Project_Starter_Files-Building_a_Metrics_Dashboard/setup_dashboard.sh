@@ -7,10 +7,10 @@ helm install prometheus prometheus-community/kube-prometheus-stack --namespace m
 kubectl create namespace observability
 kubectl apply -f manifests/app/jaeger-operator.yaml
 
+kubectl apply -f manifests/app/jaeger.yaml
 kubectl apply -f manifests/app/backend.yaml
 kubectl apply -f manifests/app/frontend.yaml
 kubectl apply -f manifests/app/trial.yaml
-kubectl apply -f manifests/app/jaeger.yaml
 
 ttab kubectl --namespace monitoring port-forward svc/prometheus-grafana --address 0.0.0.0 3000:80
 
