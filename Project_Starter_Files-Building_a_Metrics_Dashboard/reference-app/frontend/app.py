@@ -7,9 +7,10 @@ from flask import Flask, jsonify, render_template
 import logging
 from jaeger_client import Config
 from flask_opentracing import FlaskTracing
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
-
+metrics = PrometheusMetrics(app)
 
 def init_tracer(service):
     logging.getLogger("").handlers = []
@@ -25,9 +26,9 @@ def init_tracer(service):
     return config.initialize_tracer()
 
 
-jagertracer = init_tracer("test-service")
+jagertracer = init_tracer("frontend-service")
 tracer = FlaskTracing(jagertracer,True, app)
-
+@tracer.trace()
 @app.route("/")
 def homepage():
     return render_template("main.html")
