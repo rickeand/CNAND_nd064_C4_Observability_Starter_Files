@@ -46,17 +46,21 @@ def my_api():
     parent_span = flask_tracer.get_span()
     with opentracing.tracer.start_span('backend-service-api', child_of=parent_span) as span:
         answer = "something"
-        span.set_tag("get-api", answer)
+        span.set_tag("api", answer)
+        span.set_tag("status", 200)
     return jsonify(repsonse=answer)
 
 
-@app.route("/slowness")
+@app.route("/latency")
 def slowness():
     parent_span = flask_tracer.get_span()
-    with opentracing.tracer.start_span('backend-service-slowness', child_of=parent_span) as span:
-        answer = "something with latency"
-        span.set_tag("get-slowness", answer)
-        sleep(5)
+    with opentracing.tracer.start_span('backend-service-latency-test', child_of=parent_span) as span:
+        sleep_time = 10
+        answer = "very slow"
+        span.set_tag("latency-test", answer)
+        span.set_tag("status", 200)
+        span.set_tag("processing-time", sleep_time)
+        sleep(sleep_time)
     return jsonify(repsonse=answer)
 
 

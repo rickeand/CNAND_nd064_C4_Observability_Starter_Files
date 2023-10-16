@@ -19,4 +19,3 @@ kubectl apply -f manifests/app/frontend.yaml
 kubectl get pods --all-namespaces
 
 kubectl port-forward -n monitoring svc/prometheus-grafana --address 0.0.0.0 3000:80
-kubectl port-forward backend-7cff869b8d-5ktlm --address 0.0.0.0 8081:8081
