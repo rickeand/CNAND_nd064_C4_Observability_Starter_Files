@@ -52,7 +52,7 @@ def my_api():
 
 
 @app.route("/latency")
-def slowness():
+def latency():
     parent_span = flask_tracer.get_span()
     with opentracing.tracer.start_span('backend-service-latency-test', child_of=parent_span) as span:
         sleep_time = 10

@@ -63,6 +63,9 @@ Severity: high
 
 Description: The grafana dashboard shows that the response time for the latency endpoint is 10 seconds
 
+![ticket_span1.png](answer-img/ticket_span1.png)
+![ticket_span2.png](answer-img/ticket_span2.png)
+
 
 ## Creating SLIs and SLOs
 *TODO:* We want to create an SLO guaranteeing that our application has a 99.95% uptime per month. Name four SLIs that you would use to measure the success of this SLO.
