@@ -5,7 +5,7 @@ metadata:
   annotations:
     sidecar.jaegertracing.io/inject: 'true'
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: trial
@@ -15,21 +15,26 @@ spec:
         app: trial
     spec:
       containers:
-      - name: trial
-        # We advise you to build, push and use your own image, instead of using instructor's image.
-        image: rickeand/observability-trial:latest
-        ports:
-        - containerPort: 8080
+        - name: trial
+          image: rickeand/observability-trial:latest
+          imagePullPolicy: Always
+          ports:
+            - name: trialport
+              containerPort: 8080
+              protocol: TCP
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: trial-service
+  name: trial
+  labels:
+    app: trial
 spec:
   selector:
     app: trial
   ports:
-    - port: 8082
+    - name: trial
+      port: 8082
       targetPort: 8080
   type: LoadBalancer
 ---

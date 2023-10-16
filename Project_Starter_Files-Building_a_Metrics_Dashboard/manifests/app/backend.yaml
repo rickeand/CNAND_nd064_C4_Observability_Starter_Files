@@ -1,14 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-app
+  name: backend
   annotations:
     sidecar.jaegertracing.io/inject: 'true'
-    prometheus.io/scrape: "true"
-    prometheus.io/path: /metrics
-    prometheus.io/port: backend
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: backend
@@ -18,21 +15,26 @@ spec:
         app: backend
     spec:
       containers:
-      - name: backend
-        # We advise you to build, push and use your own image, instead of using instructor's image.      
-        image: rickeand/observability-backend:latest
-        ports:
-        - containerPort: 8081
+        - name: backend
+          image: rickeand/observability-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - name: backendport
+              containerPort: 8080
+              protocol: TCP
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: backend
+  labels:
+    app: backend
 spec:
   selector:
     app: backend
   ports:
-    - port: 8081
+    - name: backend
+      port: 8081
       targetPort: 8080
   type: LoadBalancer
 ---
